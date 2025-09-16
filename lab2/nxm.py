@@ -102,7 +102,7 @@ def main():
 
     n = len(processing_times)
 
-    print("Исходные данные:")
+    print("Исходные данные: ")
     for i, row in enumerate(processing_times):
         print(f"Деталь {i + 1}: {row}")
 
