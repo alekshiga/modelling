@@ -107,19 +107,16 @@ class TSPSolver:
             last_col = [j for j in range(n) if j not in used_cols][0]
 
             final_path = current_path + [(last_row, last_col)]
-            final_cost = current_cost + self.original_matrix[last_row][last_col]
 
-            # замыкаем маршрут
+            # вычисляем полную стоимость
             first_city = final_path[0][0]
             last_city = final_path[-1][1]
-            final_cost += self.original_matrix[last_city][first_city]
-            final_path.append((last_city, first_city))
+            final_cost = current_cost + self.original_matrix[last_row][last_col] + self.original_matrix[last_city][
+                first_city]
 
             if final_cost < self.best_cost:
                 self.best_cost = final_cost
                 self.best_path = final_path
-
-            return
 
         reduced_matrix, reduction_cost = self.reduce_matrix(matrix)
         lower_bound = current_cost + reduction_cost
@@ -136,7 +133,7 @@ class TSPSolver:
         i, j, penalty = max_penalty_edge
 
         include_matrix = self.exclude_row_col(reduced_matrix, i, j)
-        include_cost = current_cost + reduction_cost + self.original_matrix[i][j]
+        include_cost = current_cost + reduction_cost
 
         self._solve_recursive(
             include_matrix,
@@ -188,7 +185,7 @@ def main():
     print("\nДетали маршрута:")
     total_cost = 0
     for i, (from_city, to_city) in enumerate(best_path[:-1]):
-        cost = cost_matrix[from_city][to_city]
+        cost = solver.original_matrix[from_city][to_city]
         total_cost += cost
         print(f"  {from_city + 1} → {to_city + 1}: стоимость = {cost}")
 
